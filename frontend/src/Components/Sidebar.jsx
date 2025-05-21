@@ -35,9 +35,9 @@ const Sidebar = () => {
       {/* Navigation Items */}
       <nav className="flex-1 px-2 py-4 space-y-1">
         {/* Dashboard item with toggle */}
-        <div className="flex items-center justify-between p-2 hover:bg-teal-600 hover:text-white rounded cursor-pointer transition duration-200">
-          <div className="flex items-center space-x-3">
-            {isOpen && <span>Menu</span>}
+        <div className="flex items-center justify-between p-2 rounded cursor-pointer transition duration-200">
+          <div className="flex items-center">
+            {isOpen && <span></span>}
           </div>
           <button onClick={toggleSidebar} className="text-gray-100 text-md focus:outline-none">
             <FaBars />

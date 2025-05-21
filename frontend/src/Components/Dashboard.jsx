@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUserMd, FaUsers, FaCalendarCheck, FaFileInvoiceDollar } from 'react-icons/fa';
 import { Line } from 'react-chartjs-2';
 import {
@@ -16,13 +16,44 @@ import {
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const Dashboard = () => {
-  // Sales data for line chart
+  const [selectedRange, setSelectedRange] = useState('This Month');
+
+  // Dummy data for different time ranges
+  const salesDataByRange = {
+    'This Week': {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      data: [10000, 12000, 9000, 14000, 11000, 15000, 13000]
+    },
+    'This Month': {
+      labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+      data: [20000, 25000, 22000, 17000]
+    },
+    'Last Month': {
+      labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+      data: [18000, 21000, 20000, 16000]
+    },
+    'This Quarter': {
+      labels: ['Jan', 'Feb', 'Mar'],
+      data: [50000, 62000, 58000]
+    },
+    'Half Year': {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      data: [50000, 62000, 58000, 74000, 67000, 84500]
+    },
+    'This Year': {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+      data: [50000, 62000, 58000, 74000, 67000, 84500, 90000, 95000]
+    }
+  };
+
+  const currentData = salesDataByRange[selectedRange];
+
   const salesData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: currentData.labels,
     datasets: [
       {
-        label: 'Monthly Revenue (₹)',
-        data: [50000, 62000, 58000, 74000, 67000, 84500],
+        label: 'Revenue (₹)',
+        data: currentData.data,
         fill: true,
         borderColor: '#3B82F6',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -46,7 +77,7 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: 'Revenue Trends (2025)',
+        text: `Revenue Trends (${selectedRange})`,
         font: { size: 20 },
         color: '#111827',
         padding: { top: 10, bottom: 20 }
@@ -71,6 +102,8 @@ const Dashboard = () => {
     }
   };
 
+  const rangeOptions = ['This Week', 'This Month', 'Last Month', 'This Quarter', 'Half Year', 'This Year'];
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Clinic Management Dashboard</h1>
@@ -85,6 +118,18 @@ const Dashboard = () => {
 
       {/* Revenue Line Chart */}
       <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">Revenue Trends</h2>
+          <select
+            className="border border-gray-300 rounded-md p-2 text-gray-700"
+            value={selectedRange}
+            onChange={(e) => setSelectedRange(e.target.value)}
+          >
+            {rangeOptions.map((range) => (
+              <option key={range} value={range}>{range}</option>
+            ))}
+          </select>
+        </div>
         <div className="h-80">
           <Line data={salesData} options={options} />
         </div>

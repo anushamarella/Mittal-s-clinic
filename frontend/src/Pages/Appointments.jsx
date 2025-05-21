@@ -1,207 +1,92 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Appointments = () => {
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      patientName: 'John Doe',
-      date: '2025-05-20',
-      time: '10:00',
-      doctor: 'Dr. Smith',
-      reason: 'Routine Checkup',
-    },
-    {
-      id: 2,
-      patientName: 'Jane Smith',
-      date: '2025-05-21',
-      time: '14:30',
-      doctor: 'Dr. Adams',
-      reason: 'Follow-up',
-    },
-  ]);
+const Appointments = ({ appointments, setAppointments }) => {
+  const navigate = useNavigate();
 
-  const [showForm, setShowForm] = useState(false);
-
-  const [newAppointment, setNewAppointment] = useState({
-    patientName: '',
-    date: '',
-    time: '',
-    doctor: '',
-    reason: '',
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewAppointment(prev => ({ ...prev, [name]: value }));
+  const handleDelete = (id) => {
+    const confirm = window.confirm('Are you sure you want to delete this appointment?');
+    if (confirm) {
+      const updatedAppointments = appointments.filter((appt) => appt.id !== id);
+      setAppointments(updatedAppointments);
+    }
   };
 
-  const handleAddAppointment = (e) => {
-    e.preventDefault();
-    const { patientName, date, time, doctor, reason } = newAppointment;
-    if (
-      patientName.trim() === '' ||
-      date === '' ||
-      time === '' ||
-      doctor.trim() === '' ||
-      reason.trim() === ''
-    ) {
-      alert('Please fill all fields.');
-      return;
-    }
-    const newEntry = {
-      id: appointments.length + 1,
-      ...newAppointment,
-    };
-    setAppointments(prev => [...prev, newEntry]);
-    setNewAppointment({
-      patientName: '',
-      date: '',
-      time: '',
-      doctor: '',
-      reason: '',
-    });
-    setShowForm(false);
+  const handleEdit = (id) => {
+    navigate(`/edit-appointment/${id}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-8 flex flex-col items-center">
-      <h1 className="text-4xl font-extrabold mb-8 text-green-900 drop-shadow-md">Clinic Appointments</h1>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-4 sm:p-8 flex flex-col items-center">
+      <h1 className="text-3xl sm:text-4xl font-extrabold mb-6 sm:mb-8 text-teal-900 drop-shadow-md text-center">
+        Appointments List
+      </h1>
 
       <button
-        onClick={() => setShowForm(true)}
-        className="mb-8 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 active:scale-95 transition transform"
+        onClick={() => navigate('/add-appointment')}
+        className="mb-6 px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transition"
       >
-        + Schedule New Appointment
+        Add New Appointment
       </button>
 
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <form
-            onSubmit={handleAddAppointment}
-            className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md relative"
-          >
-            <h2 className="text-2xl font-bold mb-6 text-green-800">New Appointment</h2>
-
-            <label className="block mb-2 font-semibold text-gray-700" htmlFor="patientName">
-              Patient Name
-            </label>
-            <input
-              id="patientName"
-              name="patientName"
-              value={newAppointment.patientName}
-              onChange={handleInputChange}
-              type="text"
-              placeholder="Enter patient name"
-              className="w-full mb-5 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-              required
-            />
-
-            <label className="block mb-2 font-semibold text-gray-700" htmlFor="date">
-              Date
-            </label>
-            <input
-              id="date"
-              name="date"
-              value={newAppointment.date}
-              onChange={handleInputChange}
-              type="date"
-              className="w-full mb-5 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-              required
-            />
-
-            <label className="block mb-2 font-semibold text-gray-700" htmlFor="time">
-              Time
-            </label>
-            <input
-              id="time"
-              name="time"
-              value={newAppointment.time}
-              onChange={handleInputChange}
-              type="time"
-              className="w-full mb-5 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-              required
-            />
-
-            <label className="block mb-2 font-semibold text-gray-700" htmlFor="doctor">
-              Doctor
-            </label>
-            <input
-              id="doctor"
-              name="doctor"
-              value={newAppointment.doctor}
-              onChange={handleInputChange}
-              type="text"
-              placeholder="Doctor's name"
-              className="w-full mb-5 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-              required
-            />
-
-            <label className="block mb-2 font-semibold text-gray-700" htmlFor="reason">
-              Reason for Visit
-            </label>
-            <textarea
-              id="reason"
-              name="reason"
-              value={newAppointment.reason}
-              onChange={handleInputChange}
-              placeholder="Describe the reason"
-              rows="3"
-              className="w-full mb-6 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"
-              required
-            />
-
-            <div className="flex justify-end space-x-3">
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 font-semibold transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-md bg-green-600 text-white font-semibold hover:bg-green-700 transition"
-              >
-                Schedule
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      <div className="w-full max-w-6xl overflow-x-auto shadow-lg rounded-lg bg-white">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-green-600 text-white">
+      <div className="w-full overflow-x-auto max-w-7xl bg-white shadow-lg rounded-lg">
+        <table className="w-full min-w-[1200px] text-left border-collapse">
+          <thead className="bg-teal-600 text-white">
             <tr>
-              <th className="px-6 py-3 border-r border-green-500">#</th>
-              <th className="px-6 py-3 border-r border-green-500">Patient Name</th>
-              <th className="px-6 py-3 border-r border-green-500">Date</th>
-              <th className="px-6 py-3 border-r border-green-500">Time</th>
-              <th className="px-6 py-3 border-r border-green-500">Doctor</th>
-              <th className="px-6 py-3">Reason</th>
+              <th className="px-4 py-3 border-r">S.no</th>
+              <th className="px-4 py-3 border-r">Patient Name</th>
+              <th className="px-4 py-3 border-r">Age</th>
+              <th className="px-4 py-3 border-r">Gender</th>
+              <th className="px-4 py-3 border-r">Contact</th>
+              <th className="px-4 py-3 border-r">Symptoms</th>
+              <th className="px-4 py-3 border-r">Appointment Type</th>
+              <th className="px-4 py-3 border-r">Doctor Name</th>
+              <th className="px-4 py-3 border-r">Specialization</th>
+              <th className="px-4 py-3 border-r">Date</th>
+              <th className="px-4 py-3 border-r">Time</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {appointments.length > 0 ? (
-              appointments.map(({ id, patientName, date, time, doctor, reason }, idx) => (
+              appointments.map((appt, idx) => (
                 <tr
-                  key={id}
-                  className={`border-b border-green-100 ${
-                    idx % 2 === 0 ? 'bg-green-50' : ''
-                  } hover:bg-green-100 transition`}
+                  key={appt.id}
+                  className={`border-b border-teal-100 ${idx % 2 === 0 ? 'bg-teal-50' : ''} hover:bg-teal-100 transition`}
                 >
-                  <td className="px-6 py-4 border-r border-green-200 font-medium">{id}</td>
-                  <td className="px-6 py-4 border-r border-green-200">{patientName}</td>
-                  <td className="px-6 py-4 border-r border-green-200">{date}</td>
-                  <td className="px-6 py-4 border-r border-green-200">{time}</td>
-                  <td className="px-6 py-4 border-r border-green-200">{doctor}</td>
-                  <td className="px-6 py-4">{reason}</td>
+                  <td className="px-4 py-3 border-r">{appt.id}</td>
+                  <td className="px-4 py-3 border-r">{appt.patientName}</td>
+                  <td className="px-4 py-3 border-r">{appt.age}</td>
+                  <td className="px-4 py-3 border-r">{appt.gender}</td>
+                  <td className="px-4 py-3 border-r">{appt.contact}</td>
+                  <td className="px-4 py-3 border-r">{appt.symptoms}</td>
+                  <td className="px-4 py-3 border-r">{appt.appointmentType}</td>
+                  <td className="px-4 py-3 border-r">{appt.doctorName}</td>
+                  <td className="px-4 py-3 border-r">{appt.specialization}</td>
+                  <td className="px-4 py-3 border-r">{appt.date}</td>
+                  <td className="px-4 py-3 border-r">{appt.time}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <button
+                        onClick={() => handleEdit(appt.id)}
+                        className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(appt.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="text-center py-6 text-gray-500">
-                  No appointments scheduled.
+                <td colSpan="12" className="text-center py-6 text-gray-600">
+                  No appointments found.
                 </td>
               </tr>
             )}

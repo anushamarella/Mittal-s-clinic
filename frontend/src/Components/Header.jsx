@@ -1,6 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ setIsAuthenticated }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated'); // clear localStorage
+    setIsAuthenticated(false); // update app state
+    navigate('/'); // redirect to login page
+  };
+
   return (
     <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
       {/* Logo */}
@@ -8,10 +17,13 @@ const Header = () => {
         <span className="text-gray-800">Mittal's</span> Clinic
       </div>
 
-      {/* Login Button */}
+      {/* Logout Button */}
       <div>
-        <button className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">
-          Login
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-5 py-2 rounded-full hover:bg-red-600 transition duration-300 shadow-md"
+        >
+          Logout
         </button>
       </div>
     </header>

@@ -1,20 +1,14 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';  // <-- import Outlet
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-const Layout = () => {
+const Layout = ({ setIsAuthenticated }) => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header at the top */}
-      <Header />
-
-      {/* Main content: Sidebar + Outlet for pages */}
+      <Header setIsAuthenticated={setIsAuthenticated} />
       <div className="flex flex-1">
-        {/* Sidebar on the left */}
         <Sidebar />
-
-        {/* Content area where routed pages will appear */}
         <div className="flex-1 bg-gray-100 overflow-y-auto">
           <Outlet />
         </div>
