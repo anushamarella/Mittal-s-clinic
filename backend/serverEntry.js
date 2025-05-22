@@ -9,7 +9,6 @@ app.listen(port, () => {
   console.log("Server Listening on PORT:", port);
 });
 
-
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/mittal_clinic', {
     useNewUrlParser: true,

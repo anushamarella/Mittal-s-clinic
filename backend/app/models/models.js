@@ -80,7 +80,6 @@ const appointmentSchema = mongoose.Schema({
         type: String,
         default: 'Pending'
     }
-    
 });
 
 const Appointment = mongoose.model('Appointment', appointmentSchema);
