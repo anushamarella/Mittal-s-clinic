@@ -4,6 +4,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Server is healthy' });
 });
 
+
 app.post('/api/patientDetails', async (req, res) => {
   try {
     const patient = new Patient(req.body);
