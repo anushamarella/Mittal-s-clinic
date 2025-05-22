@@ -14,6 +14,7 @@ app.post('/api/patientDetails', async (req, res) => {
   }
 });
 
+
 app.post('/api/doctorDetails', async (req, res) => {
   try {
     const doctor = new Doctor(req.body);
