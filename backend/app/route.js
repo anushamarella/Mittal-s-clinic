@@ -1,5 +1,9 @@
 import app from '../serverEntry.js';
-import { Patient, Doctor, Appointment } from './models/models.js';
+import { Patient, Doctor, Appointment, Treatment } from './models/models.js';
+
+
+export default function registerRoutes(app) {
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Server is healthy' });
 });
@@ -34,6 +38,28 @@ app.post('/api/appointment', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+// Create a treatment
+app.post('/api/treatments', async (req, res) => {
+  try {
+    const treatment = new Treatment(req.body);
+    await treatment.save();
+    res.status(201).json({ message: 'Treatment saved', treatment });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Fetch all treatments
+app.get('/api/treatments', async (req, res) => {
+  try {
+    const treatments = await Treatment.find();
+    res.status(200).json(treatments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/appointments/by-doctor/:doctorName', async (req, res) => {
   try {
     const doctorName = req.params.doctorName;
@@ -53,3 +79,4 @@ app.get('/api/appointments/by-patient/:patientName', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+}
