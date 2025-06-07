@@ -1,5 +1,7 @@
 import { Patient, Doctor, Appointment, Treatment, Billing } from './models/models.js';
-
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import puppeteer from 'puppeteer';
 
 export default function registerRoutes(app) {
 
@@ -241,7 +243,6 @@ app.get('/api/billing/:appointmentId', async (req, res) => {
   }
 });
 
-// need an endpoiny to fetch patient history 
 
 app.get('/api/patientHistory/:patientId', async (req, res) => {
   try {
@@ -251,6 +252,29 @@ app.get('/api/patientHistory/:patientId', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }});
-}
 
-// 
+app.get('/api/invoice/pdf/:billingId', async (req, res) => {
+  try {
+    const billingId = req.params.billingId;
+    const billingDetails = await Billing.findById(billingId).populate('appointmentId');
+    if (!billingDetails) {
+      return res.status(404).json({ error: 'Billing details not found' });
+    }
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    // Load the HTML file
+    const html = fs.readFileSync('invoice.html', 'utf8');
+    await page.setContent(html);
+
+    // Generate PDF
+    await page.pdf({ path: 'invoice.pdf', format: 'A4' });
+
+    await browser.close();
+  
+    res.status(200).json({ message: 'Invoice PDF generated successfully', filePath: 'invoice.pdf' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+}

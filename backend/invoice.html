@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; }
+        .invoice-header { text-align: center; font-size: 24px; color: #FF5733; font-weight: bold; }
+        .company-info, .bill-to { margin-top: 20px; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table th, .table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .table th { background-color: #F1F1F1; color: #000; }
+        .total { font-size: 18px; color: #008000; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-header">Invoice</div>
+
+    <div class="company-info">
+        <p>Your Company Name</p>
+        <p>Your Business Address</p>
+        <p>City, Country, Postal</p>
+    </div>
+
+    <div class="bill-to">
+        <p><strong>BILL TO:</strong></p>
+        <p>Company Name</p>
+        <p>Address, Country, Postal</p>
+    </div>
+
+    <div>
+        <p>INVOICE NO #: 0000001</p>
+        <p>DATE: 12/31/20</p>
+        <p>INVOICE DUE DATE: 12/31/20</p>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>ITEM</th>
+            <th>DESCRIPTION</th>
+            <th>QUANTITY</th>
+            <th>PRICE</th>
+            <th>TAX</th>
+            <th>AMOUNT</th>
+        </tr>
+        <tr>
+            <td>Item 1</td>
+            <td>Description</td>
+            <td>1</td>
+            <td>$0</td>
+            <td>0%</td>
+            <td>$0000.00</td>
+        </tr>
+        <tr>
+            <td>Item 2</td>
+            <td>Description</td>
+            <td>1</td>
+            <td>$0</td>
+            <td>0%</td>
+            <td>$0000.00</td>
+        </tr>
+        <tr>
+            <td>Item 3</td>
+            <td>Description</td>
+            <td>1</td>
+            <td>$0</td>
+            <td>0%</td>
+            <td>$0000.00</td>
+        </tr>
+    </table>
+
+    <div class="total">TOTAL: $0000.00</div>
+
+    <p>NOTES: Add your notes here</p>
+
+</body>
+</html>

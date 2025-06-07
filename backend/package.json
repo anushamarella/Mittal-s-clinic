@@ -12,6 +12,9 @@
   "type": "module",
   "dependencies": {
     "express": "^5.1.0",
-    "mongoose": "^8.15.0"
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.15.0",
+    "pdfkit": "^0.17.1",
+    "puppeteer": "^24.10.0"
   }
 }
